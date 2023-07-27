@@ -62,9 +62,7 @@ function LastSeen (props) {
 
   return (
     <>
-      <span>
-      - Dernière modification le :
-      </span>
+      <span>- Dernière modification le : </span>
       {message}
     </>
   )
