@@ -13,8 +13,8 @@ class Case {
   }
 }
 
-function LastSeen (props) {
-  LastSeen.propTypes = {
+function LastChange (props) {
+  LastChange.propTypes = {
     url: PropTypes.string.isRequired
   }
   useEffect(() => {
@@ -68,4 +68,4 @@ function LastSeen (props) {
   )
 }
 
-export default LastSeen
+export default LastChange

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import LastSeen from './LastSeen'
+import LastChange from './LastChange'
 
 function App () {
   const [url, setUrl] = useState('default')
@@ -14,7 +14,7 @@ function App () {
         <option value="https://migration-wp.epfl.ch/chaire-gaz-artificiel/wp-json/epfl/v1/lastchange?url=https://migration-wp.epfl.ch/chaire-gaz-artificiel/abc">N&apos;existe pas</option>
         <option value="https://inside-test.epfl.ch/ae/wp-json/epfl/v1/lastchange?url=https://inside-test.epfl.ch/ae/">AE</option>
       </select>
-      <LastSeen url={url}/>
+      <LastChange url={url}/>
     </>
   )
 }
