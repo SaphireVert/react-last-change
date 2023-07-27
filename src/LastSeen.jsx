@@ -1,6 +1,18 @@
 import React, { useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 
+class Case {
+  static PLUGIN_NOT_RESPONDING = new Case('PLUGIN_NOT_RESPONDING', 'Unexpected error: no information available on the API. Is the plugin enabled on this website?')
+  static '404_NOT_FOUND' = new Case('404_NOT_FOUND', 'Error 404: The requested page does not exist')
+  static REQUEST_ERROR = new Case('REQUEST_ERROR', 'Request error: an error occured during the data fetching')
+  static SUCCESS = new Case('SUCCESS', 'SUCCESS')
+
+  constructor (name, description) {
+    this.name = name
+    this.description = description
+  }
+}
+
 function LastSeen (props) {
   LastSeen.propTypes = {
     url: PropTypes.string.isRequired
