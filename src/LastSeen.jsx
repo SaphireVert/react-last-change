@@ -55,7 +55,7 @@ function LastSeen (props) {
     } else if (requestStatus !== Case.SUCCESS) {
       return requestStatus.description
     } else {
-      return <span>{ lastChangeDate } par { username }</span>
+      return <span>{ lastChangeDate } par <a href={`https://search.epfl.ch/?filter=people&q=${username}`}>{username}</a></span>
     }
   }
   )()
