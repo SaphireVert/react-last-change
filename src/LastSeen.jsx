@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PropTypes } from 'prop-types'
 
 class Case {
@@ -17,39 +17,57 @@ function LastSeen (props) {
   LastSeen.propTypes = {
     url: PropTypes.string.isRequired
   }
-  useEffect(() => console.log('useEffect'), [props.url])
-  const [lastSeenDate, setLastSeenDate] = React.useState('')
-  const url = 'https://migration-wp.epfl.ch/chaire-gaz-artificiel/'
-  const fetchData = (url) => {
-    fetch(url)
+  useEffect(() => {
+    resetRequest()
+    console.log('useEffect')
+    fetch(props.url)
       .then(response => {
         return response.json()
       })
       .then(data => {
         if (data === 404) {
-          this.setState({ lastSeen: { username: 'Error 404: This page does not exist', last_modified: '' } })
+          setRequestStatus(Case['404_NOT_FOUND'])
         } else if (data.data && data.data.status === 404) {
-          this.setState({ lastSeen: { username: 'unexpected error: no information available on the API, is the plugin enabled on the website?' } })
+          setRequestStatus(Case.PLUGIN_NOT_RESPONDING)
         } else {
-          this.setState({ lastSeen: data[0] })
+          const obj = data[0]
+          setRequestStatus(Case.SUCCESS)
+          setUsername(obj.username)
+          setLastChangeDate(obj.last_modified)
         }
       })
       .catch(error => {
         console.log(error)
-        this.setState({ lastSeen: { username: 'unexpected error: for unknown reasons no user was found, please contact 1234' } })
+        setRequestStatus(Case.REQUEST_ERROR)
       })
+  }, [props.url])
+  const [lastChangeDate, setLastChangeDate] = useState()
+  const [username, setUsername] = useState('')
+  const [requestStatus, setRequestStatus] = useState('')
+  const resetRequest = () => {
+    setRequestStatus('')
+    setLastChangeDate('')
+    setUsername('')
   }
+  const message = () => {
+    if (!(requestStatus instanceof Case)) {
+      return <>toto</>
+    }
+    if (requestStatus !== Case.SUCCESS) {
+      return requestStatus.description
+    } else {
+      return <span>
+        {lastChangeDate} par {username}
+      </span>
+    }
+  }
+
   return (
     <>
       <span>
-      - Dernière modification le : {props.url}
+      - Dernière modification le :
       </span>
-      {/* <span>
-        {this.state.lastSeen === undefined || this.state.lastSeen.username === '' ? ' loading' : <><span>{this.state.lastSeen.last_modified} par </span><a href={`https://search.epfl.ch/?filter=people&q=${this.state.lastSeen.username}`}>{this.state.lastSeen.username}</a></>}
-      </span> */}
-      {/* <span>
-        {this.state.lastSeen === undefined || this.state.lastSeen.username === '' ? ' loading' : <><span>{this.state.lastSeen.last_modified} par </span><a href={`https://search.epfl.ch/?filter=people&q=${this.state.lastSeen.username}`}>{this.state.lastSeen.username}</a></>}
-      </span> */}
+      {message()}
     </>
   )
 }
