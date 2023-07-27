@@ -49,14 +49,16 @@ function LastSeen (props) {
     setLastChangeDate('')
     setUsername('')
   }
-  const message = <span>
-    {
-      !(requestStatus instanceof Case)
-        ? <></>
-        : requestStatus !== Case.SUCCESS ? requestStatus.description : <span>{ lastChangeDate } par { username }</span>
+  const message = (() => {
+    if (!(requestStatus instanceof Case)) {
+      return <></>
+    } else if (requestStatus !== Case.SUCCESS) {
+      return requestStatus.description
+    } else {
+      return <span>{ lastChangeDate } par { username }</span>
     }
-
-  </span>
+  }
+  )()
 
   return (
     <>
